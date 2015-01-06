@@ -1,0 +1,40 @@
+-  request:
+      method: GET
+      url: /hello-world
+
+   response:
+      status: 200
+      headers:
+         content-type: application/json
+      body: Hello World!
+
+-  request:
+      method: GET
+      url: /hello-file
+
+   response:
+      status: 200
+      headers:
+         content-type: application/json
+      file: ../json/test.json
+
+
+-  request:
+      method: GET
+      url: /multiple-res
+
+   response:
+      -  status: 200
+         headers:
+            content-type: application/json
+         body: abc1
+
+      -  status: 200
+         headers:
+            content-stype: application/json
+         body: abc2
+
+      -  status: 200
+         headers:
+            content-type: application/json
+         body: abc3
