@@ -1,7 +1,8 @@
 package fk.utilities;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * String operation utilities.
@@ -9,156 +10,185 @@ import java.util.Map;
  */
 public final class StringUtils {
 
-    /**
-     * @param text String to split.
-     * @param delimeter Character to split by.
-     * @return Resulting array after splitting.
-     */
-    public static String[] split(String text, char delimeter) {
-        int count = 1;
-        for (int i = 0; i < text.length(); i++)
-            if (text.charAt(i) == delimeter)
-                count++;
+	/**
+	 * Private constructor.
+	 */
+	private StringUtils() { }
 
-        String[] array = new String[count];
+	/**
+	 * @param text String to split.
+	 * @param delimeter Character to split by.
+	 * @return Resulting array after splitting.
+	 */
+	public static String[] split(final String text, final char delimeter) {
+		int count = 1;
+		for (int i = 0; i < text.length(); i++) {
+			if (text.charAt(i) == delimeter) {
+				count++;
+			}
+		}
 
-        int a = -1;
-        int b = 0;
+		String[] array = new String[count];
 
-        for (int i = 0; i < count; i++) {
-            while (b < text.length() && text.charAt(b) != delimeter)
-                b++;
+		int a = -1;
+		int b = 0;
 
-            array[i] = text.substring(a+1, b);
-            a = b;
-            b++;
-        }
-        return array;
-    }
+		for (int i = 0; i < count; i++) {
+			while (b < text.length()
+					&& text.charAt(b) != delimeter) {
+				b++;
+			}
 
-    /**
-     * @param line Text to take substring of.
-     * @param separator Reference string after which the substring
-     * will be taken.
-     * @return Text after the first occurrence of separator.
-     * Null is returned if the separator is not found in the text.
-     */
-    public static String substringAfter(String line, String separator) {
-        int index = line.indexOf(separator);
-        if(index == -1)
-            return null;
-        return line.substring(index + separator.length(), line.length());
-    }
+			array[i] = text.substring(a + 1, b);
+			a = b;
+			b++;
+		}
+		return array;
+	}
 
-    /**
-     * @param line Text to take substring from.
-     * @param separator Reference string before which the substring
-     * will be taken.
-     * @return Text before the last occurrence of separator.
-     * Null is returned if the separator is not found the text.
-     */
-    public static String substringBeforeLast(String line, String separator) {
-        int index = line.lastIndexOf(separator);
-        if(index == -1)
-            return null;
-        return line.substring(0, index);
-    }
+	/**
+	 * @param text String to be split.
+	 * @param delimiter Delimiter to be used to split.
+	 * @return List of split strings.
+	 */
+	public static List<String> split(final String text,
+			final String delimiter) {
+		if (text == null) {
+			return null;
+		}
 
-    /**
-     * @param line Text to take substring from.
-     * @param separator Reference string after which the substring
-     * will be taken.
-     * @return Text after the last occurrence of separator.
-     * Null is returned if the separator is not found the text.
-     */
-    public static String substringAfterLast(String line, String separator) {
-        int index = line.lastIndexOf(separator);
-        if(index == -1)
-            return null;
-        return line.substring(index + separator.length(), line.length());
-    }
+		if (text.length() == 0) {
+			return null;
+		}
 
-    /**
-     *
-     * @param line Text to take substring from.
-     * @param separator Reference string before which the substring
-     * will be taken.
-     * @return Text after the first occurrence of separator.
-     * Null is returned if the separator is not found the text.
-     */
-    public static String substringBefore(String line, String separator) {
-        int index = line.indexOf(separator);
-        if(index == -1)
-            return null;
-        return line.substring(0, index);
-    }
+		if (!text.contains(delimiter)) {
+			return new LinkedList<String>(Arrays.asList(text));
+		}
 
-    /**
-     * @param line
-     * @param search
-     * @param replace
-     * @return
-     */
-    public static String replace(String line, String search, String replace) {
-        int index = 0;
-        String result = "";
-        while ((index = line.indexOf(search)) != -1){
-            result = result + line.substring(0, index) + replace;
-            line = line.substring(index+search.length(), line.length());
-        }
-        return result+line;
-    }
+			List<String> split = new LinkedList<String>(Arrays.asList(
+					text.split("[" + delimiter + "]")));
+			System.out.println(split);
+			for (int i = 0; i < split.size(); i++) {
+				if (split.get(i).equals("")
+						|| split.get(i).equals(" ")) {
+					split.remove(i);
+					i--;
+				}
+			}
+			return split;
+	}
 
-    public static String[] split(String text, String delimit) {
-        int count = 0;
-        int index = 0;
-        Map<Integer, String> arr = new HashMap<Integer, String>();
+	/**
+	 * @param line Base string to take substring of.
+	 * @param separator Reference string before which the substring
+	 * will be taken.
+	 * @return Text before the first occurrence of the delimiter.
+	 * Null is returned if the delimiter is not present.
+	 */
+	public static String substringBeforeFirst(final String line,
+			final String separator) {
+		if (line == null) {
+			return null;
+		}
 
-        if (text.indexOf(delimit) == -1){
-            String[] array = new String[1];
-            array[0] = text;
-            return array;
-        }
+		if (line.length() == 0) {
+			return null;
+		}
 
-        while (text.length() != 0){
-            if (text.indexOf(delimit) == -1){
-                arr.put(count, text);
-                count++;
-                break;
-            } else {
-                while ((index = text.indexOf(delimit)) != -1) {
-                    arr.put(count, text.substring(0, index));
-                    count ++;
-                    text = text.substring(index+delimit.length(), text.length());
-                }
-            }
-        }
-        String[] array = new String[count];
-        //System.out.println(count);
-        for (int i=0; i<count; i++) {
-            array[i] = arr.get(i);
-        }
-        return array;
-    }
+		if (!line.contains(separator)) {
+			return null;
+		}
 
-    /**
-     * @param line
-     * @param afterString
-     * @param beforeString
-     * @return string between two char sequence
-     */
-    public static String stringInBetween(final String line, final String afterString, final String beforeString){
-        if(line == null)
-            return null;
+		return line.substring(0, line.indexOf(separator));
+	}
 
-        if(line.length() == 0)
-            return null;
+	/**
+	 * @param line Text to take substring of.
+	 * @param separator Reference string after which the substring
+	 * will be taken.
+	 * @return Text after the first occurrence of separator.
+	 * Null is returned if the separator is not found in the text.
+	 */
+	public static String substringAfterFirst(final String line,
+			final String separator) {
+		if (line == null) {
+			return null;
+		}
 
-        if(!line.contains(afterString) || !line.contains(beforeString))
-            return null;
+		if (line.length() == 0) {
+			return null;
+		}
 
-        String tmp = substringAfter(line, afterString);
-        return substringBefore(tmp, beforeString);
-    }
+		if (!line.contains(separator)) {
+			return null;
+		}
+
+		int index = line.indexOf(separator);
+		if (index == -1) {
+			return null;
+		}
+
+		return line.substring(index + separator.length(),
+				line.length());
+	}
+
+	/**
+	 * @param line Text to take substring from.
+	 * @param separator Reference string before which the substring
+	 * will be taken.
+	 * @return Text before the last occurrence of separator.
+	 * Null is returned if the separator is not found the text.
+	 */
+	public static String substringBeforeLast(final String line,
+			final String separator) {
+		if (line == null) {
+			return null;
+		}
+
+		if (line.length() == 0) {
+			return null;
+		}
+
+		if (!line.contains(separator)) {
+			return null;
+		}
+
+		int index = line.lastIndexOf(separator);
+		if (index == -1) {
+			return null;
+		}
+
+		return line.substring(0, index);
+	}
+
+	/**
+	 * @param line Text to take substring from.
+	 * @param separator Reference string after which the substring
+	 * will be taken.
+	 * @return Text after the last occurrence of separator.
+	 * Null is returned if the separator is not found the text.
+	 */
+	public static String substringAfterLast(final String line,
+			final String separator) {
+		if (line == null) {
+			return null;
+		}
+
+		if (line.length() == 0) {
+			return null;
+		}
+
+		if (!line.contains(separator)) {
+			return null;
+		}
+
+		int index = line.lastIndexOf(separator);
+		if (index == -1) {
+			return null;
+		}
+
+		return line.substring(index + separator.length(),
+				line.length());
+	}
 
 }

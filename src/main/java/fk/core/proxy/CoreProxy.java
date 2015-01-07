@@ -40,7 +40,7 @@ public class CoreProxy {
     private static IHTTPResponse makeProxyPostCall(String url) {
         IHTTPCallActions httpCallActions = HTTPFactory.getHTTPCallActionsInstance();
         //todo: split the url and find the url params and according populate the response body
-        String endPoint = StringUtils.substringAfter(url, "/");
+        String endPoint = StringUtils.substringAfterFirst(url, "/");
         if (!isClass(ConfigReferences.PARENT_CLASS_PACKAGE + "." + endPoint)) {
             LOGGER.error("Class is not declared for endpoint : " + endPoint);
             System.exit(1);

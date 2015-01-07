@@ -94,8 +94,8 @@ public class HTTPRequest implements IHTTPRequest {
 		}
 
 		if (url.contains("?")) {
-			decoded[0] = StringUtils.substringBefore(url, "?");
-			decoded[1] = StringUtils.substringAfter(url, "?");
+			decoded[0] = StringUtils.substringBeforeFirst(url, "?");
+			decoded[1] = StringUtils.substringAfterFirst(url, "?");
 		}
 		else {
 			decoded[0] = url;
@@ -115,8 +115,8 @@ public class HTTPRequest implements IHTTPRequest {
 					throw new Error("Logic error: Parameter does not contain '='\n" + url);
 					
 				String[] keyVals = new String[2];
-				keyVals[0] = StringUtils.substringBefore(pairs[i], "=");
-				keyVals[1] = StringUtils.substringAfter(pairs[i], "=");
+				keyVals[0] = StringUtils.substringBeforeFirst(pairs[i], "=");
+				keyVals[1] = StringUtils.substringAfterFirst(pairs[i], "=");
 
 				if(keyVals.length > 2) {
 					LOGGER.warn("Logic error: Multiple '=' found in a single argument pair.\n" + url);
