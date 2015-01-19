@@ -14,4 +14,6 @@ public class AutomationReferences {
     public static final String SHEET_VARIABLES = "Variables";
     public static final String SHEET_DATA_POINT = "Data Points";
 
+    public static final String DATA_TYPE = "dataType";
+
 }

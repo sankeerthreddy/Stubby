@@ -1,12 +1,14 @@
 package fk.core.provider;
 
 import fk.core.entity.IDataEntity;
+import fk.core.entity.entities.SuperEntity;
 import fk.core.provider.impl.*;
 import fk.references.AutomationReferences;
 import fk.utilities.ExcelSheetUitility;
 import fk.utilities.IExcelSheetDriver;
 import org.apache.log4j.Logger;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -48,9 +50,16 @@ public class DataFactory {
 	private static final Logger LOGGER =
 			Logger.getLogger(DataFactory.class);
 
+
+	/**
+	 * Holds all the attributes for a variable
+	 */
+	private static Map<String, Map<String, String>> metaData;
+
 	/**
 	 * Initializes the data providers.
 	 */
+	/*
 	public static void init() {
 		IExcelSheetDriver excel = new ExcelSheetUitility(
 				AutomationReferences.FILE_EXCEL_CONFIG);
@@ -60,6 +69,8 @@ public class DataFactory {
 		dataEntities = new HashMap<String, IDataEntity>();
 		values = new HashMap<String, String>();
 		globalEntities = new HashSet<String>();
+
+
 
 		int row = 1;
 		while (excel.getStringCell(row, 0) != null) {
@@ -80,7 +91,7 @@ public class DataFactory {
 				dataProviders.put(name, provider);
 			}
 
-			/*
+
 			if (jsonPath != null) {
 				if (jsonPath.length() != 0) {
 					IDataEntity entity = new ProviderDataEntity(
@@ -88,12 +99,42 @@ public class DataFactory {
 					dataEntities.put(name, entity);
 				}
 			}
-			*/
+
 
 			row++;
 		}
 
 		LOGGER.info("Data providers have been initialized.");
+	}
+	*/
+
+	public static void init() {
+		Class<SuperEntity> superClass = SuperEntity.class;
+		Field[] fields = superClass.getDeclaredFields();
+
+		for(Field field : fields ){
+			metaData.put(field.getName(), metaDataUtil(superClass, field));
+		}
+		
+	}
+
+	/**
+	 * Util method to populate the metadata map for particular field
+	 * @param superClass
+	 * @param field
+	 * @return map
+	 */
+	private static Map<String, String> metaDataUtil(Class<SuperEntity> superClass, Field field) {
+		HashMap<String, String> temp = new HashMap<String, String>();
+		String dataType = field.getType().toString();
+		if(dataType.equals("java.lang.String"))
+			temp.put(AutomationReferences.DATA_TYPE, "String");
+		else
+			temp.put(AutomationReferences.DATA_TYPE, dataType);
+
+		//todo: Populate the metadata with required information. Read all the metadata info from config files.
+
+		return temp;
 	}
 
 	/**
@@ -106,6 +147,7 @@ public class DataFactory {
 			getGeneratedData(curr);
 		}
 	}
+	
 
 	/**
 	 * @param name Name of the data entity.
