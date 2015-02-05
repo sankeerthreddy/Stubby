@@ -22,7 +22,7 @@ public class Test {
         IStubService stubService = new StubService();
         stubService.startStubService(propUtil.getStringValue(ConfigReferences.STUB_FILE_PATH), propUtil.getStringValue(ConfigReferences.YAML_FILE_PATH));
         CoreProxy cp = new CoreProxy();
-        IHTTPResponse response = cp.makeProxyGetCall(HTTPReferences.testDynamicURL);
+        IHTTPResponse response = cp.makeProxyGetCall(HTTPReferences.sampleURL);
         System.out.println(response.getRawResponse());
 
         //stubService.stopStubService();

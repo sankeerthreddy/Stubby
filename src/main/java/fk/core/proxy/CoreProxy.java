@@ -22,10 +22,12 @@ public class CoreProxy {
      */
     public static IHTTPResponse makeProxyGetCall(String url) {
         IHTTPCallActions httpCallActions = HTTPFactory.getHTTPCallActionsInstance();
+        /*
         if (makeProxyPostCall(url).getStatusCode() != 200) {
             LOGGER.error("Post Call failed. Kindly check the mock service");
             System.exit(1);
         }
+        */
         IHTTPResponse response = httpCallActions.makeGetCall(url);
 
         return response;
